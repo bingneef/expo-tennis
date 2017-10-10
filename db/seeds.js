@@ -1,7 +1,7 @@
-import { User } from '../models/User'
-import { Player } from '../models/Player'
-import { Match } from '../models/Match'
-import { NewsItem } from '../models/NewsItem'
+import { User } from './../models/User'
+import { Player } from './../models/Player'
+import { Match } from './../models/Match'
+import { NewsItem } from './../models/NewsItem'
 import faker from 'faker'
 
 const clearDatabase = async () => {

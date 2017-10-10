@@ -1,8 +1,8 @@
 import DataLoader from 'dataloader'
-import mongoose from '../services/database/mongodb'
+import mongoose from './../services/database/mongodb'
 const Schema = mongoose.Schema
-import mapResponse from '../services/graphql/mapResponse'
-import constants from '../config/constants'
+import mapResponse from './../services/graphql/mapResponse'
+import constants from './../config/constants'
 
 const ImageSchema = new Schema({
   path: String,

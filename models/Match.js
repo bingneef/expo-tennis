@@ -1,10 +1,10 @@
 import DataLoader from 'dataloader'
-import mongoose from '../services/database/mongodb'
+import mongoose from './../services/database/mongodb'
 const Schema = mongoose.Schema
-import mapResponse from '../services/graphql/mapResponse'
+import mapResponse from './../services/graphql/mapResponse'
 import { Player } from './Player'
 import _ from 'lodash'
-import pubsub from '../services/graphql/pubsub'
+import pubsub from './../services/graphql/pubsub'
 
 export const MatchSchema = new Schema({
   homePlayer: {

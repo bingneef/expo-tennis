@@ -1,10 +1,10 @@
 import Router from 'koa-router'
 import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa'
-import constants from '../config/constants'
-import demo from '../demo'
+import constants from './../config/constants'
+import demo from './../demo'
 
 const router = new Router()
-import schema from '../services/graphql/schema/index'
+import schema from './../services/graphql/schema/index'
 
 router.all('/graphql', graphqlKoa({ schema }));
 router.get('/graphiql', graphiqlKoa({

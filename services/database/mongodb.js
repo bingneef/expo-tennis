@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import constants from '../../config/constants'
+import constants from './../../config/constants'
 import promise from 'bluebird'
 
 mongoose.Promise = promise
