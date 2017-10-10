@@ -1,7 +1,7 @@
 import DataLoader from 'dataloader'
-import mongoose from './../services/database/mongodb'
+import mongoose from '../services/database/mongodb'
 const Schema = mongoose.Schema
-import mapResponse from './../services/graphql/mapResponse'
+import mapResponse from '../services/graphql/mapResponse'
 
 export const PlayerSchema = new Schema({
   firstName: String,

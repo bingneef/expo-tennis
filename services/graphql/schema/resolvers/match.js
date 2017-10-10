@@ -1,6 +1,6 @@
-import pubsub from './../../pubsub'
+import pubsub from '../../pubsub'
 import { withFilter } from 'graphql-subscriptions'
-import { Match, MatchLoader} from './../../../../models/Match'
+import { Match, MatchLoader} from '../../../../models/Match'
 
 export default {
   Query: {
