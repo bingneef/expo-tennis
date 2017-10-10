@@ -1,4 +1,4 @@
-module.exports = (keys, field, values) => {
+export default (keys, field, values) => {
   const fieldKeys = values.map(value => value[field])
   let response = []
 

@@ -1,18 +1,19 @@
-const DataLoader = require('dataloader')
-const mongoose = require('../services/database/mongodb')
+import DataLoader from 'dataloader'
+import mongoose from '../services/database/mongodb'
 const Schema = mongoose.Schema
-const mapResponse = require('../services/graphql/mapResponse')
+import mapResponse from '../services/graphql/mapResponse'
 
-const UserSchema = new Schema({
+export const UserSchema = new Schema({
   username: String,
   token: {
     type: String,
     unique: true,
   }
 })
-const User = mongoose.model('User', UserSchema)
 
-const UserLoader = new DataLoader(tokens => batchGetUsersByToken(tokens))
+export const User = mongoose.model('User', UserSchema)
+
+export const UserLoader = new DataLoader(tokens => batchGetUsersByToken(tokens))
 
 const batchGetUsersByToken = tokens => {
   return new Promise(async (resolve, reject) => {
@@ -25,10 +26,4 @@ const batchGetUsersByToken = tokens => {
     const response = mapResponse(tokens, 'token', users)
     resolve(response)
   })
-}
-
-module.exports = {
-  Model: User,
-  Schema: UserSchema,
-  Loader: UserLoader,
 }

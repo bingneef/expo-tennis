@@ -1,21 +1,34 @@
-const Router = require('koa-router')
+import Router from 'koa-router'
 const AuthenticationRouter = new Router()
-const User = require('../models/user')
+import { UserLoader } from '../models/user'
 
 module.exports = async (ctx, next) => {
+  const unauthorized = {
+    errors: [{
+      message: 'UNAUTHORIZED',
+    }]
+  }
+
+  const badRequest = {
+    errors: [{
+      message: 'BADREQUEST',
+    }]
+  }
+
   try {
     const token = ctx.request.header['x-auth']
     if (!token) {
-      ctx.throw(401)
-    }
-
-    ctx.currentUser = await User.Loader.load(token)
-    if (!ctx.currentUser) {
-      ctx.throw(401)
+      ctx.currentUser = null
+    } else {
+      ctx.currentUser = await UserLoader.load(token)
+      if (!ctx.currentUser) {
+        ctx.body = unauthorized
+        return
+      }
     }
   } catch (e) {
-    console.log(e)
-    ctx.throw(401)
+    ctx.body = badRequest
+    return
   }
 
   await next()

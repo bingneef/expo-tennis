@@ -1,0 +1,77 @@
+type Match {
+  id: String
+  homePlayer: MatchPlayer
+  awayPlayer: MatchPlayer
+  score: FullScore
+  status: String
+  currentScore: CurrentScore
+}
+
+type MatchPlayer {
+  id: String
+  fullName: String
+}
+
+type FullScore {
+  sets: [Set]
+}
+
+type CurrentScore {
+  status: String
+  currentSet: HomeAway
+  currentSetGames: HomeAway
+  currentGamePoints: HomeAway
+  completedSetScores: [HomeAway]
+}
+
+type HomeAway {
+  home: Int
+  away: Int
+}
+
+type Set {
+  status: String
+  games: [Game]
+}
+
+type Game {
+  status: String
+  points: [Point]
+}
+
+type Point {
+  status: String
+  kind: String
+  wing: String
+}
+
+type PointAdded {
+  match: Match
+  event: Point
+}
+
+type GameAdded {
+  match: Match
+  event: Game
+}
+
+type SetAdded {
+  match: Match
+  event: Set
+}
+
+type Query {
+  matches(archived: Boolean): [Match]
+  matchById(matchId: String!): Match
+}
+
+type Mutation {
+  addPoint(matchId: String!, status: String!, kind: String, wing: String): Match
+}
+
+type Subscription {
+  pointAdded(matchId: String!): PointAdded
+  gameAdded(matchId: String!): GameAdded
+  setAdded(matchId: String!): SetAdded
+  matchCompleted(matchId: String!): Match
+}

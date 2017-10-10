@@ -1,0 +1,20 @@
+type NewsItem {
+  id: String
+  title: String
+  content: String
+  excerpt(size: Int = 50): String
+  image: Image
+  tags: [String]
+}
+
+type Image {
+  title: String
+  url: String
+  width: Int
+  height: Int
+}
+
+type Query {
+  newsItemById(newsItemId: String!): NewsItem
+  newsItems(featured: Boolean = false, tag: String): [NewsItem]
+}

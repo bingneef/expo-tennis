@@ -1,6 +1,10 @@
-const constants = {
+const serverPort = process.env.PORT || 4000
+const baseUrl = process.env.baseUrl || 'http://10.0.1.55'
+
+export default {
   version: '0.0.1',
-  serverPort: process.env.PORT || 4000,
+  serverPort,
+  baseUrl,
   redisPort: process.env.REDIS_PORT || 16379,
   mongoDatabaseUrl: process.env.MONGODB_URL || 'mongodb://localhost:27017',
   elasticSearch: {
@@ -8,7 +12,6 @@ const constants = {
       host: process.env.ELASTICSERCH_HOST || '37.97.189.174:9200',
       index: process.env.ELASTICSERCH_INDEX || 'discogs',
     }
-  }
+  },
+  staticUrl: process.env.STATIC_URL || `${baseUrl}:${serverPort}`
 };
-
-module.exports = constants;

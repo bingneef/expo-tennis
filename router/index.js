@@ -1,21 +1,26 @@
-const Router = require('koa-router')
-const graphqlHTTP = require('koa-graphql')
+import Router from 'koa-router'
+import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa'
+import constants from '../config/constants'
+import demo from '../demo'
 
 const router = new Router()
-const schema = require('../services/graphql/schema/index')
+import schema from '../services/graphql/schema/index'
 
-router.all('/graphql', graphqlHTTP({
+router.all('/graphql', graphqlKoa({ schema }));
+router.get('/graphiql', graphiqlKoa({
   schema,
-  graphiql: false
-}))
+  endpointURL: '/graphql',
+  subscriptionsEndpoint: `ws://localhost:${constants.serverPort}/subscriptions`
+}));
 
 // Other routes
 router.all('/status', async (ctx) => {
   ctx.body = { alive: true }
 })
 
-router.all('/', async (ctx) => {
-  ctx.body = { alive: true }
+router.all('/demo', async (ctx) => {
+  await demo()
+  ctx.body = 'Demo completed'
 })
 
-module.exports = router
+export default router

@@ -1,5 +1,4 @@
-const winston = require('winston')
-
+import winston from 'winston'
 winston.add(winston.transports.File, { filename: 'log/output.log' });
 
-module.exports = winston
+export default winston

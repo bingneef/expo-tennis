@@ -1,6 +1,8 @@
-const mongoose = require('mongoose')
-const constants = require('../../config/constants')
-mongoose.Promise = require('bluebird')
+import mongoose from 'mongoose'
+import constants from '../../config/constants'
+import promise from 'bluebird'
 
+mongoose.Promise = promise
 mongoose.connect(constants.mongoDatabaseUrl, { useMongoClient: true, promiseLibrary: global.Promise });
-module.exports = mongoose
+
+export default mongoose
