@@ -13,6 +13,9 @@ const ImageSchema = new Schema({
 
 class ImageClass {
   get url () {
+    if (this.path.indexOf('http') == 0) {
+      return this.path
+    }
     return `${constants.staticUrl}/assets/${this.path}`
   }
 }
@@ -28,6 +31,7 @@ export const NewsItemSchema = new Schema({
   content: String,
   image: ImageSchema,
   tags: Array,
+  pubDate: Date,
 })
 
 class NewsItemClass { }
