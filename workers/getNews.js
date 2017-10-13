@@ -46,7 +46,6 @@ const perform = async () => {
       firstItem = false
     }
     await Promise.all(promises)
-    console.log('done')
     if (!module.parent) process.exit(0)
   } catch (e) {
     console.log(e)
