@@ -23,5 +23,11 @@ type Feed {
 
 type Query {
   newsItemById(newsItemId: String!): NewsItem
-  newsItems(featured: Boolean = false, tag: String, cursor: Int = 0, limit: Int = 10): Feed
+  newsItems(
+              featured: Boolean = false,
+              tag: String,
+              notTag: String,
+              cursor: Int = 0,
+              limit: Int = 10
+            ): Feed
 }
