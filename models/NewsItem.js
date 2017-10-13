@@ -32,6 +32,10 @@ export const NewsItemSchema = new Schema({
   image: ImageSchema,
   tags: Array,
   pubDate: Date,
+  link: {
+    type: String,
+    index: true,
+  }
 })
 
 class NewsItemClass { }

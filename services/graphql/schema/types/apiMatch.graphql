@@ -1,0 +1,74 @@
+type Venue {
+  externalId: String
+  name: String
+  cityName: String
+  countryName: String
+  countryCode: String
+}
+
+type Competitors {
+  externalId: String
+  name: String
+  abbreviation: String
+  team: String
+  nationality: String
+  countryCode: String
+}
+
+type PeriodScore {
+  homeScore: Int
+  awayScore: Int
+  number: Int
+}
+
+type ApiMatch {
+  id: String
+  externalId: String
+  seasonId: String
+  tournamentId: String
+  sportId: String
+  scheduled: String
+  status: String
+  matchStatus: String
+  homeScore: Int
+  awayScore: Int
+  winnerId: String
+  periodScores: [PeriodScore]
+  competitors: [Competitors]
+  venue: Venue
+  tournament: Tournament
+  season: Season
+}
+
+type Season {
+  externalId: String
+  tournamentId: String
+  name: String
+  startDate: String
+  endDate: String
+  year: Int
+}
+
+type Tournament {
+  externalId: String
+  name: String
+  category: Category
+  sport: Sport
+  kind: String
+  gender: String
+}
+
+type Category {
+  externalId: String
+  name: String
+}
+
+type Sport {
+  externalId: String
+  name: String
+}
+
+type Query {
+  apiMatches(archived: Boolean): [ApiMatch]
+  apiMatchById(matchId: String!): ApiMatch
+}

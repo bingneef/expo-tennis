@@ -3,15 +3,25 @@ import { NewsItem, NewsItemLoader} from'../../../../models/NewsItem'
 export default {
   Query: {
     newsItemById: async (root, { newsItemId }) => await NewsItemLoader.load(newsItemId),
-    newsItems: async (root, { featured, tag }) => {
-      let query = NewsItem.find().where({ featured })
+    newsItems: async (root, { featured, tag, cursor, limit }) => {
+      let params = { featured }
       if (tag) {
-        query = query.where({tags: tag})
+        params = {
+          ...params,
+          tags: tag,
+        }
       }
-      return await query
+      const feed = await NewsItem.find(params).sort({pubDate: -1}).skip(cursor).limit(limit)
+      const totalCount = await NewsItem.count(params).where(params)
+
+      return {
+        totalCount,
+        feed,
+      }
     }
   },
   NewsItem: {
-    excerpt: async (newsItem, { size }) => newsItem.content.substring(0, size)
+    excerpt: (newsItem, { size }) => newsItem.content.substring(0, size),
+    pubDateTimestamp: newsItem => new Date(newsItem.pubDate).getTime()
   },
 }

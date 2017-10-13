@@ -3,6 +3,8 @@ type NewsItem {
   title: String
   content: String
   excerpt(size: Int = 50): String
+  pubDate: String
+  pubDateTimestamp: Float
   image: Image
   tags: [String]
 }
@@ -14,7 +16,12 @@ type Image {
   height: Int
 }
 
+type Feed {
+  totalCount: Int
+  feed: [NewsItem]
+}
+
 type Query {
   newsItemById(newsItemId: String!): NewsItem
-  newsItems(featured: Boolean = false, tag: String): [NewsItem]
+  newsItems(featured: Boolean = false, tag: String, cursor: Int = 0, limit: Int = 10): Feed
 }

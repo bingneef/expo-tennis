@@ -16,6 +16,7 @@ import logger from './services/logger'
 import Router from 'koa-router'
 import router from './router'
 import AuthenticationMiddleware from './middleware/authentication'
+import { initCron } from './cron'
 
 const serverPort = constants.serverPort
 
@@ -35,7 +36,6 @@ app.use(koaStatic('./public'))
 if (!module.parent) {
   const ws = createServer(app.callback())
   ws.listen(serverPort, () => {
-    // Set up the WebSocket for handling GraphQL subscriptions
     new SubscriptionServer({
       execute,
       subscribe,
@@ -45,6 +45,8 @@ if (!module.parent) {
       path: '/subscriptions',
     })
   })
+
+  initCron()
 
   console.log(`GraphQL Server is now running on http://localhost:${serverPort}`)
   console.log(`Version: ${constants.version}`)
