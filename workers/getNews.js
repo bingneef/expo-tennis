@@ -1,7 +1,13 @@
 import axios from 'axios'
 import parser from 'xml2json'
 import { NewsItem } from './../models/NewsItem'
+import { Match } from './../models/ApiMatch'
 import decode from 'unescape'
+import getColors from 'get-image-colors'
+import fs from 'fs'
+import crypto from 'crypto'
+import sharp from 'sharp'
+import constants from '../config/constants'
 
 const perform = async () => {
   try {
@@ -22,22 +28,36 @@ const perform = async () => {
       }
 
       let newsItem = await NewsItem.findOne({link: item.link})
+
+      let newItem = false
       if (!newsItem) {
         newsItem = new NewsItem()
+        newItem = true
       }
-      const payload = {
+
+      let matchId = null
+      if (firstItem) {
+        const match = await Match.findOne().select('id')
+        matchId = match._id
+      }
+
+      let payload = {
         featured: firstItem,
         title: item.title,
         link: item.link,
         content,
-        image: {
-          path: item['media:thumbnail'].url,
-          title: 'BBC UK',
-          width: item['media:thumbnail'].width,
-          height: item['media:thumbnail'].height,
-        },
         tags,
+        matchId,
         pubDate: item.pubDate,
+      }
+
+      if (newItem) {
+        const images = await handleNewImages(item['media:thumbnail'].url)
+
+        payload = {
+          ...payload,
+          images,
+        }
       }
 
       newsItem.set(payload)
@@ -50,6 +70,63 @@ const perform = async () => {
   } catch (e) {
     console.log(e)
     if (!module.parent) process.exit(1)
+  }
+}
+
+const handleNewImages = async (url) => {
+  try {
+    const imageId = crypto.randomBytes(10).toString('hex')
+    const baseDir = `./public/assets`
+    const imageDir = `news-item/${imageId}`
+    let colors = []
+    try {
+      colors = await getColors(url)
+      colors = colors.map(color => color.hex())
+    } catch (e) { }
+
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    if (!fs.existsSync(`${baseDir}/${imageDir}`)) {
+      fs.mkdirSync(`${baseDir}/${imageDir}`);
+    }
+
+    let dimensions = [
+      {
+        width: 600,
+        height: 300,
+        size: 'banner-sm'
+      },
+      {
+        width: 120,
+        height: 120,
+        size: 'square-sm'
+      }
+    ]
+    let images = []
+
+    for (let dimension of dimensions) {
+      const image = await resizeImage(response.data, baseDir, imageDir, dimension)
+      images.push(image)
+    }
+
+    return images
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
+const resizeImage = async (data, baseDir, imageDir, {size, width, height}) => {
+  const filePath = `${imageDir}/${size}.jpg`
+
+  await sharp(data)
+    .resize(width, height)
+    .toFile(`${baseDir}/${filePath}`)
+
+  return {
+    path: filePath,
+    size,
+    width,
+    height,
   }
 }
 

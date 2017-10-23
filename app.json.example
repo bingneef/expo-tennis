@@ -11,7 +11,8 @@
         "REDIS_PORT": 16379,
         "MONGODB_URL": "mongodb://localhost:27017",
         "ELASTICSERCH_HOST": "37.97.189.174:9200",
-        "ELASTICSERCH_INDEX": "discogs"
+        "ELASTICSERCH_INDEX": "discogs",
+        "SPORTRADAR_TOKEN": "key"
       }
     }
   ]

@@ -1,4 +1,6 @@
 import { NewsItem, NewsItemLoader} from'../../../../models/NewsItem'
+import { MatchLoader} from '../../../../models/ApiMatch'
+import mongoose from 'mongoose'
 
 export default {
   Query: {
@@ -36,6 +38,19 @@ export default {
   },
   NewsItem: {
     excerpt: (newsItem, { size }) => newsItem.content.substring(0, size),
-    pubDateTimestamp: newsItem => new Date(newsItem.pubDate).getTime()
+    pubDateTimestamp: newsItem => new Date(newsItem.pubDate).getTime(),
+    imageSized: (newsItem, { size }) => newsItem.images.filter(image => image.size == size)[0],
+    match: async (newsItem) => {
+      if (!newsItem.matchId || !mongoose.Types.ObjectId.isValid(newsItem.matchId)) {
+        return {}
+      }
+
+      try {
+        return await MatchLoader.load(newsItem.matchId)
+      } catch (e) {
+        console.log(e)
+        return {}
+      }
+    },
   },
 }

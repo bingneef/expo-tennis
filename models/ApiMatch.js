@@ -29,6 +29,11 @@ const PeriodScoreSchema = new Schema({
   number: Number,
 })
 
+const RoundSchema = new Schema({
+  kind: String,
+  name: String,
+})
+
 const MatchSchema = new Schema({
   externalId: String,
   seasonId: String,
@@ -42,6 +47,7 @@ const MatchSchema = new Schema({
   winnerId: String,
   periodScores: [PeriodScoreSchema],
   competitors: [CompetitorsSchema],
+  round: RoundSchema,
   venue: VenueSchema,
 })
 
@@ -55,13 +61,17 @@ export const MatchLoader = new DataLoader(ids => batchGetMatchesById(ids))
 
 const batchGetMatchesById = ids => {
   return new Promise(async (resolve, reject) => {
-    const matches = await Match.find({ _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) } })
+    try {
+      const matches = await Match.find({ _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) } })
 
-    // Only because we know ids is unique
-    if (matches.length == ids.length) {
-      resolve(matches)
+      // Only because we know ids is unique
+      if (matches.length == ids.length) {
+        resolve(matches)
+      }
+      const response = mapResponse(ids, 'id', matches)
+      resolve(response)
+    } catch (e) {
+      reject(e)
     }
-    const response = mapResponse(ids, 'id', matches)
-    resolve(response)
   })
 }

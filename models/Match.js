@@ -7,6 +7,13 @@ import _ from 'lodash'
 import pubsub from '../services/graphql/pubsub'
 
 export const MatchSchema = new Schema({
+  round: {
+    kind: String,
+    name: String,
+  },
+  venue: {
+    name: String,
+  },
   homePlayer: {
     id: String,
     fullName: String,

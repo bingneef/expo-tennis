@@ -1,0 +1,26 @@
+input UserInput {
+  email: String
+  familyName: String
+  givenName: String
+  name: String
+  photoUrl: String
+  externalId: String
+}
+
+type User {
+  email: String
+  familyName: String
+  givenName: String
+  name: String
+  photoUrl: String
+  token: String
+  externalId: String
+}
+
+type Query {
+  currentUser: User
+}
+
+type Mutation {
+  createOrUpdateUser(user: UserInput): User
+}

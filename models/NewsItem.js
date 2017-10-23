@@ -6,9 +6,10 @@ import constants from '../config/constants'
 
 const ImageSchema = new Schema({
   path: String,
-  title: String,
   height: Number,
   width: Number,
+  size: String,
+  colorScheme: [String],
 })
 
 class ImageClass {
@@ -29,13 +30,14 @@ export const NewsItemSchema = new Schema({
   },
   title: String,
   content: String,
-  image: ImageSchema,
+  images: [ImageSchema],
   tags: Array,
   pubDate: Date,
   link: {
     type: String,
     index: true,
-  }
+  },
+  matchId: String,
 })
 
 class NewsItemClass { }

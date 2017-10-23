@@ -1,5 +1,5 @@
 const serverPort = process.env.PORT || 4000
-const baseUrl = process.env.baseUrl || 'http://10.0.1.55'
+const baseUrl = process.env.baseUrl || 'http://localhost'
 
 export default {
   version: '0.0.1',
@@ -13,5 +13,8 @@ export default {
       index: process.env.ELASTICSERCH_INDEX || 'discogs',
     }
   },
-  staticUrl: process.env.STATIC_URL || `${baseUrl}:${serverPort}`
+  staticUrl: process.env.STATIC_URL || `${baseUrl}:${serverPort}`,
+  tokens: {
+    sportradar: process.env.SPORTRADAR_TOKEN || '',
+  },
 };

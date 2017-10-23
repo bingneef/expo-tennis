@@ -47,8 +47,6 @@ const runMatch = async () => {
       },
     ).save()
 
-    console.log(match._id)
-
     await addPoint(match)
     resolve()
   })

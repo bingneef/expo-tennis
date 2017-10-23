@@ -6,7 +6,14 @@ import demo from '../demo'
 const router = new Router()
 import schema from '../services/graphql/schema/index'
 
-router.all('/graphql', graphqlKoa({ schema }));
+router.all('/graphql',
+  (ctx, next) => graphqlKoa({
+    schema,
+    rootValue: {
+      ctx,
+    },
+  })(ctx, next),
+);
 router.get('/graphiql', graphiqlKoa({
   schema,
   endpointURL: '/graphql',

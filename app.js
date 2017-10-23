@@ -48,7 +48,7 @@ if (!module.parent) {
 
   initCron()
 
-  console.log(`GraphQL Server is now running on http://localhost:${serverPort}`)
+  console.log(`GraphQL Server is now running on http://${constants.baseUrl}:${serverPort}`)
   console.log(`Version: ${constants.version}`)
   console.log(`Environment: ${(process.env.NODE_ENV || 'dev')}`)
 }

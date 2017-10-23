@@ -5,15 +5,18 @@ type NewsItem {
   excerpt(size: Int = 50): String
   pubDate: String
   pubDateTimestamp: Float
-  image: Image
+  images: [Image]
+  imageSized(size: String = "banner-sm"): Image
+  match: ApiMatch
   tags: [String]
 }
 
 type Image {
-  title: String
   url: String
+  size: String
   width: Int
   height: Int
+  colorScheme: [String]
 }
 
 type Feed {

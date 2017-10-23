@@ -1,17 +1,22 @@
 import { Tournament } from './../models/Tournament'
 import { Season } from './../models/Season'
 import { Match } from './../models/ApiMatch'
+import moment from 'moment'
+import axios from 'axios'
+
+import constants from '../config/constants'
 
 const perform = async () => {
   try {
-    await Tournament.remove()
-    await Season.remove()
-    await Match.remove()
+    const day = moment().subtract(1, 'd').format('YYYY-MM-DD')
+    const token = constants.tokens.sportradar
+    const url = `https://api.sportradar.com/tennis-t2/en/schedules/${day}/results.json?api_key=${token}`
 
-    const response = require('./../data/liveScores.json').results
-    for (let data of response) {
+    const response = await axios.get(url)
+
+    for (let data of response.data.results) {
       if (data.sport_event.tournament.type == 'doubles' || data.sport_event.tournament_round.type == 'qualification') {
-        continue;
+        continue
       }
 
       const tournament = await saveTournament(data)
@@ -46,6 +51,9 @@ const saveTournament = async (data) => {
 
 const saveSeason = async (data, tournamentId) => {
   const apiSeason = data.sport_event.season
+  if (!apiSeason) {
+    return {}
+  }
   let season = await Season.findOne({externalId: apiSeason.id})[0]
   if (!season) {
     season = new Season()
@@ -68,15 +76,19 @@ const saveMatch = async (data, tournamentId, seasonId) => {
   const apiSportEvent = data.sport_event
   const apiSportEventStatus = data.sport_event_status
 
-  let match = await Match.findOne({externalId: apiSportEvent.id})[0]
+  let match = await Match.findOne({externalId: apiSportEvent.id})
   if (!match) {
     match = new Match()
   }
 
-  const payload = {
+  let payload = {
     externalId: apiSportEvent.id,
     tournamentId,
     seasonId,
+    round: {
+      kind: apiSportEvent.tournament_round.type,
+      name: apiSportEvent.tournament_round.name,
+    },
     scheduled: apiSportEvent.schedules,
     status: apiSportEventStatus.status,
     matchStatus: apiSportEventStatus.match_status,
@@ -85,6 +97,15 @@ const saveMatch = async (data, tournamentId, seasonId) => {
     winnerId: apiSportEventStatus.winner_id,
     competitors: prepCompetitors(apiSportEvent.competitors),
     periodScores: prepPeriodScores(apiSportEventStatus.period_scores),
+  }
+
+  if (apiSportEvent.venue) {
+    payload = {
+      ...payload,
+      venue: {
+        name: apiSportEvent.venue.name,
+      },
+    }
   }
 
   match.set(payload)

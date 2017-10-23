@@ -1,9 +1,5 @@
 type Venue {
-  externalId: String
   name: String
-  cityName: String
-  countryName: String
-  countryCode: String
 }
 
 type Competitors {
@@ -21,6 +17,11 @@ type PeriodScore {
   number: Int
 }
 
+type Round {
+  kind: String
+  name: String
+}
+
 type ApiMatch {
   id: String
   externalId: String
@@ -33,9 +34,10 @@ type ApiMatch {
   homeScore: Int
   awayScore: Int
   winnerId: String
+  round: Round
+  venue: Venue
   periodScores: [PeriodScore]
   competitors: [Competitors]
-  venue: Venue
   tournament: Tournament
   season: Season
 }
@@ -50,6 +52,7 @@ type Season {
 }
 
 type Tournament {
+  id: String
   externalId: String
   name: String
   category: Category
@@ -69,6 +72,7 @@ type Sport {
 }
 
 type Query {
-  apiMatches(archived: Boolean): [ApiMatch]
+  apiMatches(archived: Boolean, tournamentId: String): [ApiMatch]
   apiMatchById(matchId: String!): ApiMatch
+  apiTournaments: [Tournament]
 }
