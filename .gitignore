@@ -3,5 +3,5 @@ docker
 log/*.log
 app.json
 tmp
-public/assets
+public/assets/**
 data/**
