@@ -21,6 +21,9 @@ module.exports = function (shipit) {
         files: [
           'app.json'
         ],
+        dirs: [
+          'public/assets',
+        ]
       }
     },
     production: {

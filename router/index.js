@@ -17,7 +17,7 @@ router.all('/graphql',
 router.get('/graphiql', graphiqlKoa({
   schema,
   endpointURL: '/graphql',
-  subscriptionsEndpoint: `ws://localhost:${constants.serverPort}/subscriptions`
+  subscriptionsEndpoint: `ws://${constants.baseUrl}:${constants.serverPort}/subscriptions`
 }));
 
 // Other routes
