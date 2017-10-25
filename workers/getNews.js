@@ -35,14 +35,11 @@ const perform = async () => {
         newItem = true
       }
 
-      let matchId = null
-
       let payload = {
         title: item.title,
         link: item.link,
         content,
         tags,
-        matchId,
         pubDate: item.pubDate,
       }
 
