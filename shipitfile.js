@@ -9,7 +9,7 @@ module.exports = function (shipit) {
       workspace: 'tmp',
       deployTo: '/var/www/tennis-api',
       repositoryUrl: 'git@github.com:bingneef/expo-tennis.git',
-      ignores: ['.git', 'node_modules'],
+      ignores: ['.git', 'node_modules', 'public/assets/news-item'],
       keepReleases: 10,
       shallowClone: true,
       dirToCopy: '',

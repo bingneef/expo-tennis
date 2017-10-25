@@ -30,7 +30,6 @@ export const batchGetUsersByToken = tokens => {
   return new Promise(async (resolve, reject) => {
     const users = await User.find({ token: tokens })
 
-    console.log(users)
     // Only because we know tokens is unique
     if (users.length == tokens.length) {
       resolve(users)
