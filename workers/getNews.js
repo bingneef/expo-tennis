@@ -38,7 +38,6 @@ const perform = async () => {
       let matchId = null
 
       let payload = {
-        featured: false,
         title: item.title,
         link: item.link,
         content,
