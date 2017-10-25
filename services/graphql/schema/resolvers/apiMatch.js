@@ -1,13 +1,13 @@
 import pubsub from '../../pubsub'
 import { withFilter } from 'graphql-subscriptions'
-import { Match, MatchLoader} from '../../../../models/ApiMatch'
-import { Tournament, TournamentLoader} from '../../../../models/Tournament'
-import { Season, SeasonLoader} from '../../../../models/Season'
+import { Match } from '../../../../models/ApiMatch'
+import { Tournament } from '../../../../models/Tournament'
+import { Season } from '../../../../models/Season'
 import mongoose from 'mongoose'
 
 export default {
   Query: {
-    apiMatchById: async (root, { matchId }) => await MatchLoader.load(matchId),
+    apiMatchById: async ({ ctx }, { matchId }) => await ctx.dataLoaders.match.load(matchId),
     apiMatches: async (root, { tournamentId }) => {
       return await Match.find({tournamentId}).limit(10)
     },
@@ -16,22 +16,22 @@ export default {
     }
   },
   ApiMatch: {
-    tournament: async (match) => {
+    tournament: async (match, _, __, { rootValue }) => {
       if (!match.tournamentId || !mongoose.Types.ObjectId.isValid(match.tournamentId)) {
         return {}
       }
 
       try {
-        return await TournamentLoader.load(match.tournamentId)
+        return await rootValue.ctx.dataLoaders.tournament.load(match.tournamentId)
       } catch (e) { return {} }
     },
-    season: async (match) => {
+    season: async (match, _, __, { rootValue }) => {
       if (!match.seasonId || !mongoose.Types.ObjectId.isValid(match.seasonId)) {
         return {}
       }
 
       try {
-        return await SeasonLoader.load(match.seasonId)
+        return await rootValue.ctx.dataLoaders.season.load(match.seasonId)
       } catch (e) { return {} }
     },
   },

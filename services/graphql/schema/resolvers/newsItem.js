@@ -1,10 +1,10 @@
-import { NewsItem, NewsItemLoader} from'../../../../models/NewsItem'
+import { NewsItem } from'../../../../models/NewsItem'
 import { MatchLoader} from '../../../../models/ApiMatch'
 import mongoose from 'mongoose'
 
 export default {
   Query: {
-    newsItemById: async (root, { newsItemId }) => await NewsItemLoader.load(newsItemId),
+    newsItemById: async ({ ctx }, { newsItemId }) => await ctx.dataLoaders.newsItem.load(newsItemId),
     newsItems: async (root, { featured, tag, notTag, cursor, limit }) => {
       let params = { featured }
       if (tag) {
@@ -40,13 +40,13 @@ export default {
     excerpt: (newsItem, { size }) => newsItem.content.substring(0, size),
     pubDateTimestamp: newsItem => new Date(newsItem.pubDate).getTime(),
     imageSized: (newsItem, { size }) => newsItem.images.filter(image => image.size == size)[0],
-    match: async (newsItem) => {
+    match: async (newsItem, _, __, parent) => {
       if (!newsItem.matchId || !mongoose.Types.ObjectId.isValid(newsItem.matchId)) {
         return {}
       }
 
       try {
-        return await MatchLoader.load(newsItem.matchId)
+        return await parent.rootValue.ctx.dataLoaders.match.load(newsItem.matchId)
       } catch (e) {
         console.log(e)
         return {}

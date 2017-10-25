@@ -10,12 +10,12 @@ import sharp from 'sharp'
 import constants from '../config/constants'
 
 const perform = async () => {
+  let newItems = []
   try {
     const response = await axios.get('http://feeds.bbci.co.uk/sport/tennis/rss.xml?edition=uk#')
     const parsed = parser.toJson(response.data)
     let items = JSON.parse(parsed).rss.channel.item
 
-    let firstItem = true
     const promises = []
     for (let item of items) {
       const content = decode(item.description.replace(/<(?:.|\n)*?>/gm, ''))
@@ -36,13 +36,9 @@ const perform = async () => {
       }
 
       let matchId = null
-      if (firstItem) {
-        const match = await Match.findOne().select('id')
-        matchId = match._id
-      }
 
       let payload = {
-        featured: firstItem,
+        featured: false,
         title: item.title,
         link: item.link,
         content,
@@ -62,8 +58,6 @@ const perform = async () => {
 
       newsItem.set(payload)
       promises.push(newsItem.save())
-
-      firstItem = false
     }
     await Promise.all(promises)
     if (!module.parent) process.exit(0)

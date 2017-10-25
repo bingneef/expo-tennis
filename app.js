@@ -16,6 +16,8 @@ import logger from './services/logger'
 import Router from 'koa-router'
 import router from './router'
 import AuthenticationMiddleware from './middleware/authentication'
+import DataLoadersMiddleware from './middleware/dataLoaders'
+
 import { initCron } from './cron'
 
 const serverPort = constants.serverPort
@@ -23,6 +25,7 @@ const serverPort = constants.serverPort
 const app = new Koa()
 
 // Authentication
+app.use(DataLoadersMiddleware)
 app.use(AuthenticationMiddleware)
 
 // Middleware
@@ -48,7 +51,7 @@ if (!module.parent) {
 
   initCron()
 
-  console.log(`GraphQL Server is now running on http://${constants.baseUrl}:${serverPort}`)
+  console.log(`GraphQL Server is now running on ${constants.baseUrl}:${serverPort}`)
   console.log(`Version: ${constants.version}`)
   console.log(`Environment: ${(process.env.NODE_ENV || 'dev')}`)
 }

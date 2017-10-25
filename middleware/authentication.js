@@ -1,6 +1,4 @@
 import Router from 'koa-router'
-const AuthenticationRouter = new Router()
-import { UserLoader } from '../models/User'
 
 module.exports = async (ctx, next) => {
   const unauthorized = {
@@ -20,7 +18,7 @@ module.exports = async (ctx, next) => {
     if (!token) {
       ctx.currentUser = null
     } else {
-      ctx.currentUser = await UserLoader.load(token)
+      ctx.currentUser = await ctx.dataLoaders.user.load(token)
       if (!ctx.currentUser) {
         ctx.body = unauthorized
         return

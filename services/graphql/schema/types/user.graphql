@@ -23,4 +23,5 @@ type Query {
 
 type Mutation {
   createOrUpdateUser(user: UserInput): User
+  validateToken(token: String): User
 }

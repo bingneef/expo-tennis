@@ -57,9 +57,7 @@ MatchSchema.loadClass(MatchClass);
 
 export const Match = mongoose.model('ApiMatch', MatchSchema)
 
-export const MatchLoader = new DataLoader(ids => batchGetMatchesById(ids))
-
-const batchGetMatchesById = ids => {
+export const batchGetMatchesById = ids => {
   return new Promise(async (resolve, reject) => {
     try {
       const matches = await Match.find({ _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) } })

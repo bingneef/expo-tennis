@@ -26,12 +26,11 @@ UserSchema.pre('save', function (next) {
 
 export const User = mongoose.model('User', UserSchema)
 
-export const UserLoader = new DataLoader(tokens => batchGetUsersByToken(tokens))
-
-const batchGetUsersByToken = tokens => {
+export const batchGetUsersByToken = tokens => {
   return new Promise(async (resolve, reject) => {
     const users = await User.find({ token: tokens })
 
+    console.log(users)
     // Only because we know tokens is unique
     if (users.length == tokens.length) {
       resolve(users)

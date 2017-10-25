@@ -17,7 +17,8 @@
     "db:seed": "babel-node db/seeds.js --exec babel-node",
     "demo:start": "babel-node demo.js --exec babel-node",
     "worker:getnews": "babel-node workers/getNews.js --exec babel-node",
-    "worker:getresults": "babel-node workers/getResults.js --exec babel-node"
+    "worker:getresults": "babel-node workers/getResults.js --exec babel-node",
+    "worker:tmp": "babel-node workers/tmp.js --exec babel-node"
   },
   "dependencies": {
     "apollo-server-koa": "^1.1.2",
@@ -52,6 +53,7 @@
     "sports-live": "^1.0.1",
     "subscriptions-transport-ws": "^0.9.0",
     "unescape": "^1.0.1",
+    "wade": "^0.3.3",
     "winston": "^2.3.1",
     "xml2js": "^0.4.19",
     "xml2json": "^0.11.0"

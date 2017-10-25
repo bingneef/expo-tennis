@@ -43,9 +43,8 @@ class TournamentClass { }
 TournamentSchema.loadClass(TournamentClass);
 
 export const Tournament = mongoose.model('Tournament', TournamentSchema)
-export const TournamentLoader = new DataLoader(ids => batchGetTournamentsById(ids))
 
-const batchGetTournamentsById = ids => {
+export const batchGetTournamentsById = ids => {
   return new Promise(async (resolve, reject) => {
     const tournaments = await Tournament.find({ _id: { $in: ids.map(id => mongoose.Types.ObjectId(id)) } })
 

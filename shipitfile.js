@@ -22,7 +22,7 @@ module.exports = function (shipit) {
           'app.json'
         ],
         dirs: [
-          'public/assets',
+          'public/assets/news-item',
         ]
       }
     },

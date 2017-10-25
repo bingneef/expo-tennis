@@ -46,9 +46,7 @@ NewsItemSchema.loadClass(NewsItemClass);
 
 export const NewsItem = mongoose.model('NewsItem', NewsItemSchema)
 
-export const NewsItemLoader = new DataLoader(ids => batchGetNewsItemsById(ids))
-
-const batchGetNewsItemsById = ids => {
+export const batchGetNewsItemsById = ids => {
   return new Promise(async (resolve, reject) => {
     const newsItems = await NewsItem.find({ _id: ids }) || []
 

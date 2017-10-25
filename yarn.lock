@@ -4218,6 +4218,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
+wade@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/wade/-/wade-0.3.3.tgz#0b3099d67646336706224b4122dd286a4f4d2ce2"
+
 whatwg-fetch@>=0.10.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
