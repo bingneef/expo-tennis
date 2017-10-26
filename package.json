@@ -21,6 +21,7 @@
     "worker:tmp": "babel-node workers/tmp.js --exec babel-node"
   },
   "dependencies": {
+    "apollo-engine": "^0.5.0",
     "apollo-server-koa": "^1.1.2",
     "axios": "^0.16.2",
     "bluebird": "^3.5.0",
@@ -37,6 +38,7 @@
     "ioredis": "^3.1.4",
     "koa": "^2.3.0",
     "koa-bodyparser": "next",
+    "koa-compress": "^2.0.0",
     "koa-graphql": "^0.7.3",
     "koa-helmet": "^3.2.0",
     "koa-logger-winston": "^0.0.2",

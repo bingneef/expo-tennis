@@ -4,6 +4,8 @@ import ResponseTime from 'koa-response-time'
 import KoaLogger from 'koa-logger-winston'
 import koaBody from 'koa-bodyparser'
 import koaStatic from 'koa-static'
+import { Engine } from 'apollo-engine'
+import compress from 'koa-compress'
 
 import { execute, subscribe } from 'graphql'
 import { createServer } from 'http'
@@ -24,6 +26,23 @@ const serverPort = constants.serverPort
 
 const app = new Koa()
 
+// Apollo Engine
+if (process.env.NODE_ENV == 'production' && constants.tokens.apolloEngine) {
+  const engine = new Engine({
+    engineConfig: {
+      apiKey: constants.tokens.apolloEngine,
+      logging: {
+        level: 'DEBUG'
+      }
+    },
+    graphqlPort: serverPort,
+    endpoint: '/graphql',
+    dumpTraffic: true,
+  });
+  engine.start()
+  app.use(engine.koaMiddleware())
+}
+
 // Authentication
 app.use(DataLoadersMiddleware)
 app.use(AuthenticationMiddleware)
@@ -31,6 +50,7 @@ app.use(AuthenticationMiddleware)
 // Middleware
 app.use(KoaLogger(logger))
 app.use(ResponseTime())
+app.use(compress())
 app.use(Helmet())
 app.use(koaBody())
 app.use(router.routes()).use(router.allowedMethods())

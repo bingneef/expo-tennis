@@ -12,6 +12,8 @@ router.all('/graphql',
     rootValue: {
       ctx,
     },
+    tracing: true,
+    cacheControl: true,
   })(ctx, next),
 );
 router.get('/graphiql', graphiqlKoa({

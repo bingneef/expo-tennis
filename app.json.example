@@ -13,7 +13,8 @@
         "ELASTICSERCH_HOST": "37.97.189.174:9200",
         "ELASTICSERCH_INDEX": "discogs",
         "SPORTRADAR_TOKEN": "key",
-        "STATIC_URL": "http://localhost:4000"
+        "STATIC_URL": "http://localhost:4000",
+        "APOLLO_ENGINE_KEY": ""
       }
     }
   ]

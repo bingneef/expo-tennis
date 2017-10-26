@@ -16,5 +16,6 @@ export default {
   staticUrl: process.env.STATIC_URL || `${baseUrl}:${serverPort}`,
   tokens: {
     sportradar: process.env.SPORTRADAR_TOKEN || '',
+    apolloEngine: process.env.APOLLO_ENGINE_KEY || null,
   },
 };
