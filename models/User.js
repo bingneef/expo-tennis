@@ -4,6 +4,11 @@ const Schema = mongoose.Schema
 import mapResponse from '../services/graphql/mapResponse'
 import crypto from 'crypto'
 
+const NotificationsSchema = new Schema({
+  pushToken: String,
+  newsAlerts: Boolean
+})
+
 export const UserSchema = new Schema({
   email: String,
   familyName: String,
@@ -14,7 +19,8 @@ export const UserSchema = new Schema({
   token: {
     type: String,
     unique: true,
-  }
+  },
+  notifications: NotificationsSchema,
 })
 
 UserSchema.pre('save', function (next) {

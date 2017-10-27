@@ -8,9 +8,12 @@ import fs from 'fs'
 import crypto from 'crypto'
 import sharp from 'sharp'
 import constants from '../config/constants'
+import { sendPushForNewNewsItems } from '../services/expo'
 
 const perform = async () => {
   let newItems = []
+  let containsNewNewsItem = false
+
   try {
     const response = await axios.get('http://feeds.bbci.co.uk/sport/tennis/rss.xml?edition=uk#')
     const parsed = parser.toJson(response.data)
@@ -29,10 +32,11 @@ const perform = async () => {
 
       let newsItem = await NewsItem.findOne({link: item.link})
 
-      let newItem = false
+      let itemIsNew = false
       if (!newsItem) {
         newsItem = new NewsItem()
-        newItem = true
+        itemIsNew = true
+        containsNewNewsItem = true
       }
 
       let payload = {
@@ -43,7 +47,7 @@ const perform = async () => {
         pubDate: item.pubDate,
       }
 
-      if (newItem) {
+      if (itemIsNew) {
         const images = await handleNewImages(item['media:thumbnail'].url)
 
         payload = {
@@ -56,6 +60,10 @@ const perform = async () => {
       promises.push(newsItem.save())
     }
     await Promise.all(promises)
+    if (containsNewNewsItem) {
+      await sendPushForNewNewsItems()
+    }
+
     if (!module.parent) process.exit(0)
   } catch (e) {
     console.log(e)

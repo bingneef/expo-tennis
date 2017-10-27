@@ -4,7 +4,7 @@ import { User } from '../../models/User'
 const expo = new Expo()
 
 export const sendPushForNewNewsItems = async () => {
-  const users = await User.find({'notifications.newsItems': true, 'notifications.pushToken': { $exists: true, $ne: ''}})
+  const users = await User.find({'notifications.newsAlerts': true, 'notifications.pushToken': { $exists: true, $ne: ''}})
   const pushTokens = users.map(user => user.notifications.pushToken)
 
   let messages = []

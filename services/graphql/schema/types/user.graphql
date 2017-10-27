@@ -7,6 +7,16 @@ input UserInput {
   externalId: String
 }
 
+input NotificationsInput {
+  pushToken: String
+  newsAlerts: Boolean
+}
+
+type Notifications {
+  pushToken: String
+  newsAlerts: Boolean
+}
+
 type User {
   email: String
   familyName: String
@@ -15,6 +25,7 @@ type User {
   photoUrl: String
   token: String
   externalId: String
+  notifications: Notifications
 }
 
 type Query {
@@ -24,4 +35,5 @@ type Query {
 type Mutation {
   createOrUpdateUser(user: UserInput): User
   validateToken(token: String): User
+  setNotifications(notifications: NotificationsInput): Notifications
 }
