@@ -4,3 +4,4 @@ log/*.log
 app.json
 tmp
 data/**
+public/assets/news-item/**
